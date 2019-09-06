@@ -6,6 +6,7 @@ var Provider = class Providers {
 
     constructor(){
         this.data = [];
+        this.all = []
     }
 
     reset(){
@@ -15,6 +16,7 @@ var Provider = class Providers {
     process(_id, body){
         var $ = cheerio.load(body);
         console.log("_id: ", _id, $(".story").length);
+        this.all.push(this.data);
         // reset
         this.reset();
         var self = this;
@@ -51,8 +53,12 @@ var Provider = class Providers {
             console.log("provider is created in database");
             return this;
         })
-
     }
+
+    get data(){
+        return this.all;
+    }
+
 }
 
 exports.getProviders = () => {
