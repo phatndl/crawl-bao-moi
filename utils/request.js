@@ -9,7 +9,7 @@ exports.requestApi = (endpoint) => {
             method: "GET",
             gzip: true,
         }, (err, res, body)=> {
-            if (err) return reject(new Error('Could not request the API'));
+            if (err) return reject(new Error('Could not request the API' + uri));
             if (res.statusCode !== 200) return reject(new Error('The API responsed status code '+ res.statusCode));
             resolve(body);
         }); 

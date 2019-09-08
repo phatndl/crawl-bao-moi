@@ -5,9 +5,21 @@ exports.format = (str) => {
 }
 
 exports.crawl = (crawlEls, callback) => {
-    crawlEls.map( (crawlEl, i) => {
-        requestApi(crawlEl.href).then((body) => {
-            callback(crawlEl, body);
-        })
+    crawlEls.map((crawlEl, i) => {
+        var newHref = crawlEl.href ? crawlEl.href.replace("/r/", "/c/") : "";
+        // if (i <= 2){
+        try{
+            requestApi(newHref).then((body) => {
+                // body.pipe(callback
+                callback(crawlEl, body);
+            })
+        }catch(e){
+            console.log(e, newHref, "Error here");
+        }
+        // }
+        // else{
+        //     console.log("not call api");
+        // }
+        
     })
 }

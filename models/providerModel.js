@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var ObjectId = mongoose.Schema.ObjectId;
 
 var ProviderSchema = new mongoose.Schema({
-    sourceId: ObjectId,
+    _id: ObjectId,
     length: Number,
     data: [
         {
@@ -12,6 +12,7 @@ var ProviderSchema = new mongoose.Schema({
             href: String,
             time: String,
             relate: String,
+            source: String
         }
     ]
 })

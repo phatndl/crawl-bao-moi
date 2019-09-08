@@ -34,25 +34,34 @@ var Caterogy = class categories{
             // save href childs
             if (childs.length > 1){
                 $(childs).each((i, child) => {
-                    sub_caterogies.push({
-                        title: format(childs.text())[i],
-                        href: $(child).attr("href")
-                    })
+                    // var obj = 
+                    self.category_data.push({
+                        caterogy_title: format(childs.text())[i],
+                        href: $(child).attr("href")   
+                    });
                 })
+                // $(childs).each((i, child) => {
+                //     sub_caterogies.push({
+                //         title: format(childs.text())[i],
+                //         href: $(child).attr("href")
+                //     })
+                // })
             }
             
-            if (format(parent.text())){
+            if (format(parent.text()) && href){
                 var obj = {
                     caterogy_title: format(parent.text())[0], 
                     href,
-                    sub_caterogies_length: sub_caterogies.length,
-                    sub_caterogies
+                    // sub_caterogies_length: sub_caterogies.length,
+                    // sub_caterogies
                 }
                 self.category_data.push(obj);
             }
         })                 
         return this;
     }
+
+
 
     save(){
         if (this.category_data.length){
@@ -65,6 +74,15 @@ var Caterogy = class categories{
         }
     }
 
+    async find(condition){
+        return new Promise((resolve, reject) => {
+            categoryModel.find(condition, (err, result) => {
+                if (err) reject(new Error(`can't find ${condition}`));
+                resolve(result);
+            })
+        })
+    }
+
     get(){
         return new Promise((resolve, reject) => {
             categoryModel.find((err, result) => {
@@ -73,6 +91,8 @@ var Caterogy = class categories{
             })
         })
     }
+
+    // parse parent and childrent in same level
 }
 
 module.exports = Caterogy;
