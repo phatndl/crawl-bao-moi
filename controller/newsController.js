@@ -25,23 +25,24 @@ var News = class _News {
             var video = "";
             var el = els[i];
             var stats = false;
-            // console.log($(el).text());
+  
             if ($(el).is(".body-image")){
                 text = $(el).next().text();
-                image = $(el).find("a>img").attr("src");
-                console.log("image: ", image);
-                stats = true;
+                image = $(el).find("img").attr("src");
+                // stats = true;
             }
             else if ($(el).is(".body-text:not(.media-caption)")){
                 text = $(el).text();
-                stats = true;
+                // stats = true;
             }
             else if ($(el).is(".body-video")){
-                video = $(el).find("video").attr("src");
+                video = $(el).find("video source").attr("data-src");
                 text = $(el).next().text();
-                stats = true;
+                console.log("video: ", video);
+                // stats = true;
             }
-            if (stats) article_body.push({text, image, video});
+
+            article_body.push({text, image, video});
         }
         // var article_body = $(".article__body p").each((i, el) => {
         //     var text = "";

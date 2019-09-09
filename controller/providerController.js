@@ -2,11 +2,13 @@ var providerModel = require("../models/providerModel");
 var mongoose = require("mongoose");
 const cheerio = require('cheerio');
 var { format } = require("../utils/format");
+var { event } = require("../event");
 
 var Provider = class Providers {
 
-    constructor(){
+    constructor(eventEmitter){
         this.data = {};
+        this.eventEmitter = eventEmitter;
     }
 
     reset(){
@@ -16,9 +18,9 @@ var Provider = class Providers {
     process(id, body){
         var $ = cheerio.load(body);
         // reset
-        this.reset();
+        // this.reset();
         var self = this;
-        
+        console.log($(".story").length, id);
         $('.story').each((idx, article) => {
             var _id = new mongoose.mongo.ObjectId(id);
             var thumb = $(article).find(".story__thumb img").attr("src");
@@ -47,18 +49,22 @@ var Provider = class Providers {
                 }
             }
         });
-        console.log($(".story").length, id);
         // console.log(this.data)
         return this; 
     }
 
     save(){
-        providerModel.create(this.data).then(result => {
+        providerModel.create(this.data)
+        .then(result => {
             console.log("provider is created in database");
-        }).catch(e => console.log("error before save", this.data.length))
-        
-        return this;
-        
+            event.emitEvent("success-DB");
+        })
+        .catch(e => {
+            console.log("error before save", this.data._id, this.data.length);
+            event.emitEvent("error-DB");
+        });
+
+      
     }
 
     get(){
